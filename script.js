@@ -22,13 +22,16 @@ async function getWordOfDay(){
     let response = await fetch('https://words.dev-apis.com/word-of-the-day');
     let body = await response.json();
     let word = body.word;
-    console.log(typeof body);
-    // console.log(body);
-    // console.log(word);
+    // console.log(word.toUpperCase());
     return word.toUpperCase()
 }
-getWordOfDay();
-
+// async function getWord(){
+//   let word = await getWordOfDay();
+//   return word;
+// }
+// getWordOfDay();
+let word = getWordOfDay().then();
+console.log(word);
 // let row = 1;
 // let character = 0;
 let guess = {
