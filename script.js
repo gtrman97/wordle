@@ -50,12 +50,8 @@ window.addEventListener("keyup", (e) => {
   if (guess.character === 5 && isEnterKey(letter)) guessWord();
   if (isBackspaceKey(letter)) deleteCharacter();
   if (isLetter(letter)) guessLetter(letter);
+  if (guess.row === 7) console.log('you lose');
   console.log(`row is ${guess.row} and char is ${guess.character}`);
-  if (guess.row === 7) {
-    setTimeout(() => {
-      endGame();
-    }, 1000);
-  }
 });
 
 function guessLetter(letter) {
@@ -72,7 +68,22 @@ function guessWord() {
     word += square.innerText;
   }
   console.log(word);
-  if(word === answer) alert("good guess!");
+  // if(word === answer) alert("good guess!");
+  for(let i=0; i<5; i++) {
+    if(answer.includes(word[i])) {
+      if(word[i] === answer[i]) {
+        // console.log(`i is ${i}, word[i] is ${word[i]} and answer[i] is ${answer[i]}`);
+        squares[i].style.backgroundColor = "green";
+      }
+      else {
+        squares[i].style.backgroundColor = "#daa520";
+      }
+    }
+    else {
+      squares[i].style.backgroundColor = "gray";
+    }
+    squares[i].style.color = "white";
+  }
   incrementRow();
 }
 
