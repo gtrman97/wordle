@@ -36,7 +36,7 @@ window.addEventListener("keyup", (e) => {
   if (guess.character === 5 && isEnterKey(letter)) guessWord();
   if (isBackspaceKey(letter)) deleteCharacter();
   if (isLetter(letter)) guessLetter(letter);
-  if (guess.row === 7) console.log('you lose');
+  if (guess.row === 7) console.log("you lose");
   console.log(`row is ${guess.row} and char is ${guess.character}`);
 });
 
@@ -52,20 +52,18 @@ function guessWord() {
   for (let square of squares) {
     word += square.innerText;
   }
-  if(word === answer) alert("You Win!");
+  if (word === answer) alert("You Win!");
   console.log(word);
   // if(word === answer) alert("good guess!");
-  for(let i=0; i<5; i++) {
-    if(answer.includes(word[i])) {
-      if(word[i] === answer[i]) {
+  for (let i = 0; i < 5; i++) {
+    if (answer.includes(word[i])) {
+      if (word[i] === answer[i]) {
         // console.log(`i is ${i}, word[i] is ${word[i]} and answer[i] is ${answer[i]}`);
         squares[i].style.backgroundColor = "green";
-      }
-      else {
+      } else {
         squares[i].style.backgroundColor = "#daa520";
       }
-    }
-    else {
+    } else {
       squares[i].style.backgroundColor = "gray";
     }
     squares[i].style.color = "white";
@@ -97,3 +95,19 @@ function deleteCharacter() {
   let squares = document.querySelector(`.row${guess.row}`).children;
   squares[guess.character].innerText = "";
 }
+
+async function validateWord() {
+
+  let response = await fetch("https://words.dev-apis.com/validate-word", {
+    method: "POST",
+    mode: "cors",
+    "word": "crane",
+    headers: {
+      'content-type': 'application/json'
+    }
+  });
+  let body = await response.json();
+  let isValid = body.validWord;
+  console.log(isValid);
+}
+validateWord();
