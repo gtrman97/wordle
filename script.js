@@ -47,6 +47,7 @@ let guess = {
 window.addEventListener("keyup", (e) => {
   console.log(e.key);
   let letter = e.key;
+  if(isBackspace(letter)) deleteCharacter();
   if(isLetter(letter)) guessLetter(guess, letter);
   console.log(typeof e.code);
   console.log(`row is ${guess.row} and char is ${guess.character}`);
@@ -74,4 +75,15 @@ function endGame() {
 
 function isLetter(letter) {
   return /^[a-zA-Z]$/.test(letter);
+}
+
+function isBackspace(letter){
+  return letter === "Backspace";
+}
+function deleteCharacter(){
+  if(!guess.character) return; 
+  guess.character--;
+  let squares = document.querySelector(`.row${guess.row}`).children;
+  squares[guess.character].innerText = "";
+  
 }
