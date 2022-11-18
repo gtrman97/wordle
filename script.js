@@ -18,29 +18,37 @@
 //   .catch((error) => console.error(error));
 // console.log(`word of the day is ${word}`);
 
-async function getWordOfDay(){
-    let response = await fetch('https://words.dev-apis.com/word-of-the-day');
-    let body = await response.json();
-    let word = body.word;
-    // console.log(word.toUpperCase());
-    return word.toUpperCase()
-}
+// let word = null;
+
+// async function getWordOfDay(){
+//     let response = await fetch('https://words.dev-apis.com/word-of-the-day');
+//     let body = await response.json();
+//     let answer = body.word;
+//     // console.log(word.toUpperCase());
+//     // word = answer.toUpperCase();
+//     // return word.toUpperCase()
+// }
 // async function getWord(){
 //   let word = await getWordOfDay();
 //   return word;
 // }
 // getWordOfDay();
-let word = getWordOfDay().then();
-console.log(word);
+// console.log(`word of the day is ${word}`);
 // let row = 1;
 // let character = 0;
+
+let answer = "IVORY";
+
 let guess = {
   row: 1,
   character: 0,
 };
 
 window.addEventListener("keyup", (e) => {
-  guessLetter(guess, e);
+  console.log(e.key);
+  let letter = e.key;
+  if(isLetter(letter)) guessLetter(guess, letter);
+  console.log(typeof e.code);
   console.log(`row is ${guess.row} and char is ${guess.character}`);
   if (guess.character === 5) incrementRow();
   if (guess.row === 7) {
@@ -50,11 +58,9 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-function guessLetter(guess, e) {
+function guessLetter(guess, letter) {
   let squares = document.querySelector(`.row${guess.row}`).children;
-  let code = e.code;
-  let len = code.length;
-  squares[guess.character].innerText = code[len - 1];
+  squares[guess.character].innerText = letter.toUpperCase();
   guess.character++;
 }
 
@@ -64,4 +70,8 @@ function incrementRow() {
 }
 function endGame() {
   alert("You Win!");
+}
+
+function isLetter(letter) {
+  return /^[a-zA-Z]$/.test(letter);
 }
