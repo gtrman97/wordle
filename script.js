@@ -24,8 +24,9 @@
 // let character = 0;
 
 let answer = "IVORY";
+let ANSWER_LENGTH = 5;
 
-let guess = {
+let currentGuess = {
   row: 1,
   character: 0,
 };
@@ -33,21 +34,21 @@ let guess = {
 window.addEventListener("keyup", (e) => {
   console.log(e.key);
   let letter = e.key;
-  if (guess.character === 5 && isEnterKey(letter)) guessWord();
+  if (currentGuess.character < ANSWER_LENGTH && isLetter(letter)) guessLetter(letter);
   if (isBackspaceKey(letter)) deleteCharacter();
-  if (isLetter(letter)) guessLetter(letter);
-  if (guess.row === 7) console.log("you lose");
-  console.log(`row is ${guess.row} and char is ${guess.character}`);
+  if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter)) guessWord();
+  if (currentGuess.row === 7) console.log("you lose");
+  console.log(`row is ${currentGuess.row} and char is ${currentGuess.character}`);
 });
 
 function guessLetter(letter) {
-  let squares = document.querySelector(`.row${guess.row}`).children;
-  squares[guess.character].innerText = letter.toUpperCase();
-  guess.character++;
+  let squares = document.querySelector(`.row${currentGuess.row}`).children;
+  squares[currentGuess.character].innerText = letter.toUpperCase();
+  currentGuess.character++;
 }
 
 function guessWord() {
-  let squares = document.querySelector(`.row${guess.row}`).children;
+  let squares = document.querySelector(`.row${currentGuess.row}`).children;
   let word = "";
   for (let square of squares) {
     word += square.innerText;
@@ -72,8 +73,8 @@ function guessWord() {
 }
 
 function incrementRow() {
-  guess.row++;
-  guess.character = 0;
+  currentGuess.row++;
+  currentGuess.character = 0;
 }
 function endGame() {
   alert("You Win!");
@@ -90,10 +91,10 @@ function isEnterKey(letter) {
   return letter === "Enter";
 }
 function deleteCharacter() {
-  if (!guess.character) return;
-  guess.character--;
-  let squares = document.querySelector(`.row${guess.row}`).children;
-  squares[guess.character].innerText = "";
+  if (!currentGuess.character) return;
+  currentGuess.character--;
+  let squares = document.querySelector(`.row${currentGuess.row}`).children;
+  squares[currentGuess.character].innerText = "";
 }
 
 async function validateWord() {
