@@ -47,11 +47,10 @@ let guess = {
 window.addEventListener("keyup", (e) => {
   console.log(e.key);
   let letter = e.key;
-  if(guess.character === 5 && isEnterKey(letter)) guessWord();
-  if(isBackspaceKey(letter)) deleteCharacter();
-  if(isLetter(letter)) guessLetter(letter);
+  if (guess.character === 5 && isEnterKey(letter)) guessWord();
+  if (isBackspaceKey(letter)) deleteCharacter();
+  if (isLetter(letter)) guessLetter(letter);
   console.log(`row is ${guess.row} and char is ${guess.character}`);
-  if (guess.character === 5) incrementRow();
   if (guess.row === 7) {
     setTimeout(() => {
       endGame();
@@ -65,16 +64,16 @@ function guessLetter(letter) {
   guess.character++;
 }
 
-function guessWord(){
+function guessWord() {
   console.log("POOPS!");
   let squares = document.querySelector(`.row${guess.row}`).children;
   let word = "";
-  for(let square of squares) {
+  for (let square of squares) {
     word += square.innerText;
   }
-
   console.log(word);
-
+  if(word === answer) alert("good guess!");
+  incrementRow();
 }
 
 function incrementRow() {
@@ -89,16 +88,15 @@ function isLetter(letter) {
   return /^[a-zA-Z]$/.test(letter);
 }
 
-function isBackspaceKey(letter){
+function isBackspaceKey(letter) {
   return letter === "Backspace";
 }
 function isEnterKey(letter) {
   return letter === "Enter";
 }
-function deleteCharacter(){
-  if(!guess.character) return; 
+function deleteCharacter() {
+  if (!guess.character) return;
   guess.character--;
   let squares = document.querySelector(`.row${guess.row}`).children;
   squares[guess.character].innerText = "";
-  
 }
