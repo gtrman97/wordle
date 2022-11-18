@@ -1,17 +1,3 @@
-// let row1Squares = document.querySelector('.row1').children;
-// console.log(row1Squares);
-// let word = "CRANE", i = 0;
-// for(let square of row1Squares) {
-//     // console.log(row1Squares[i]);
-//     square.innerText = word[i];
-//     i++;
-// }
-
-// let row1 = document.querySelector('.row1');
-// row1.addEventListener('keyup', (e) => {
-//     console.log(e.target);
-// })
-
 // let word = fetch("https://words.dev-apis.com/word-of-the-day")
 //   .then((res) => res.json())
 //   .then((body) => body.word)
@@ -61,12 +47,12 @@ function guessLetter(letter) {
 }
 
 function guessWord() {
-  console.log("POOPS!");
   let squares = document.querySelector(`.row${guess.row}`).children;
   let word = "";
   for (let square of squares) {
     word += square.innerText;
   }
+  if(word === answer) alert("You Win!");
   console.log(word);
   // if(word === answer) alert("good guess!");
   for(let i=0; i<5; i++) {
