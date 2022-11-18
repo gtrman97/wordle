@@ -59,7 +59,6 @@ function guessWord() {
   for (let i = 0; i < 5; i++) {
     if (answer.includes(word[i])) {
       if (word[i] === answer[i]) {
-        // console.log(`i is ${i}, word[i] is ${word[i]} and answer[i] is ${answer[i]}`);
         squares[i].style.backgroundColor = "green";
       } else {
         squares[i].style.backgroundColor = "#daa520";
