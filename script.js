@@ -69,6 +69,8 @@ async function init() {
   }
 
   function playerLoses() {
+    let heading = document.querySelector('.heading');
+    heading.innerText = `The word was ${answer}`;
     result.style.color = "red";
     result.innerText = "You Lose!";
     result.style.visibility = "visible";
