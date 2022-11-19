@@ -4,25 +4,24 @@
 //   .catch((error) => console.error(error));
 // console.log(`word of the day is ${word}`);
 async function init() {
+  let result = document.querySelector(".result");
+  let ANSWER_LENGTH = 5;
+  let won_game = false;
+  let currentGuess = {
+    row: 1,
+    character: 0,
+    guess: "",
+  };
   let response = await fetch("https://words.dev-apis.com/word-of-the-day");
   let responseObject = await response.json();
-  let word = responseObject.word.toUpperCase();
+  let answer = responseObject.word.toUpperCase();
   setLoading(false);
+
   // console.log(`word of the day is ${word}`);
   // word = answer.toUpperCase();
   // return word.toUpperCase()
-}
-let result = document.querySelector(".result");
-let answer = "IVORY";
-let ANSWER_LENGTH = 5;
-let won_game = false;
 
-init();
-let currentGuess = {
-  row: 1,
-  character: 0,
-  guess: "",
-};
+// let answer = "IVORY";
 
 window.addEventListener("keyup", (e) => {
   // console.log(e.key);
@@ -36,6 +35,7 @@ window.addEventListener("keyup", (e) => {
 });
 
 function guessLetter(letter) {
+  // console.log(answer);
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
   squares[currentGuess.character].innerText = letter.toUpperCase();
   currentGuess.guess += letter.toUpperCase();
@@ -67,15 +67,6 @@ function guessWord(word) {
   incrementRow();
 }
 
-function makeMap(word) {
-  const freq = {};
-  for (let char of word) {
-    if (!freq[char]) freq[char] = 1;
-    else freq[char]++;
-  }
-  return freq;
-}
-
 function incrementRow() {
   currentGuess.row++;
   currentGuess.character = 0;
@@ -96,10 +87,6 @@ function playerLoses() {
   result.style.visibility = "visible";
 }
 
-function isLetter(letter) {
-  return /^[a-zA-Z]$/.test(letter);
-}
-
 function isBackspaceKey(letter) {
   return letter === "Backspace";
 }
@@ -116,9 +103,22 @@ function deleteCharacter() {
     currentGuess.guess.length - 1
   );
 }
-
 function setLoading(isLoading) {
   result.classList.toggle("hide-loading", !isLoading);
+}
+
+}
+function makeMap(word) {
+  const o = {};
+  for (let char of word) {
+    if (!o[char]) o[char] = 1;
+    else o[char]++;
+  }
+  return o;
+}
+
+function isLetter(letter) {
+  return /^[a-zA-Z]$/.test(letter);
 }
 
 async function validateWord() {
@@ -135,3 +135,5 @@ async function validateWord() {
   console.log(isValid);
 }
 validateWord();
+
+init();
