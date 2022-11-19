@@ -1,8 +1,3 @@
-// let word = fetch("https://words.dev-apis.com/word-of-the-day")
-//   .then((res) => res.json())
-//   .then((body) => body.word)
-//   .catch((error) => console.error(error));
-// console.log(`word of the day is ${word}`);
 async function init() {
   let result = document.querySelector(".result");
   let ANSWER_LENGTH = 5;
@@ -17,96 +12,87 @@ async function init() {
   let answer = responseObject.word.toUpperCase();
   setLoading(false);
 
-  // console.log(`word of the day is ${word}`);
-  // word = answer.toUpperCase();
-  // return word.toUpperCase()
+  window.addEventListener("keyup", (e) => {
+    let letter = e.key;
+    if (currentGuess.character < ANSWER_LENGTH && isLetter(letter))
+      guessLetter(letter);
+    if (isBackspaceKey(letter)) deleteCharacter();
+    if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter))
+      guessWord(currentGuess.guess);
+    if (currentGuess.row === 7 && !won_game) playerLoses();
+  });
 
-// let answer = "IVORY";
+  function guessLetter(letter) {
+    let squares = document.querySelector(`.row${currentGuess.row}`).children;
+    squares[currentGuess.character].innerText = letter.toUpperCase();
+    currentGuess.guess += letter.toUpperCase();
+    currentGuess.character++;
+  }
 
-window.addEventListener("keyup", (e) => {
-  // console.log(e.key);
-  let letter = e.key;
-  if (currentGuess.character < ANSWER_LENGTH && isLetter(letter))
-    guessLetter(letter);
-  if (isBackspaceKey(letter)) deleteCharacter();
-  if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter))
-    guessWord(currentGuess.guess);
-  if (currentGuess.row === 7 && !won_game) playerLoses();
-});
+  function guessWord(word) {
+    let answerMap = makeMap(answer);
+    console.log(answerMap);
 
-function guessLetter(letter) {
-  // console.log(answer);
-  let squares = document.querySelector(`.row${currentGuess.row}`).children;
-  squares[currentGuess.character].innerText = letter.toUpperCase();
-  currentGuess.guess += letter.toUpperCase();
-  currentGuess.character++;
-}
-
-function guessWord(word) {
-  let answerMap = makeMap(answer);
-  console.log(answerMap);
-
-  let squares = document.querySelector(`.row${currentGuess.row}`).children;
-  if (word === answer) playersWins();
-  for (let i = 0; i < ANSWER_LENGTH; i++) {
-    if (answer.includes(word[i])) {
-      if (word[i] === answer[i]) {
-        squares[i].classList.add("correct");
-        answerMap[word[i]]--;
+    let squares = document.querySelector(`.row${currentGuess.row}`).children;
+    if (word === answer) playersWins();
+    for (let i = 0; i < ANSWER_LENGTH; i++) {
+      if (answer.includes(word[i])) {
+        if (word[i] === answer[i]) {
+          squares[i].classList.add("correct");
+          answerMap[word[i]]--;
+        }
       }
     }
-  }
-  for (let i = 0; i < ANSWER_LENGTH; i++) {
-    if (squares[i].classList.contains("correct")) continue;
-    if (answerMap[word[i]]) {
-      squares[i].classList.add("close");
-    } else {
-      squares[i].classList.add("incorrect");
+    for (let i = 0; i < ANSWER_LENGTH; i++) {
+      if (squares[i].classList.contains("correct")) continue;
+      if (answerMap[word[i]]) {
+        squares[i].classList.add("close");
+      } else {
+        squares[i].classList.add("incorrect");
+      }
     }
+    incrementRow();
   }
-  incrementRow();
-}
 
-function incrementRow() {
-  currentGuess.row++;
-  currentGuess.character = 0;
-  currentGuess.guess = "";
-}
-function playersWins() {
-  let header = document.querySelector(".heading");
-  header.classList.add("winning");
-  result.style.color = "lightgreen";
-  result.innerText = "You Win!";
-  result.style.visibility = "visible";
-  won_game = true;
-}
+  function incrementRow() {
+    currentGuess.row++;
+    currentGuess.character = 0;
+    currentGuess.guess = "";
+  }
+  function playersWins() {
+    let header = document.querySelector(".heading");
+    header.classList.add("winning");
+    result.style.color = "lightgreen";
+    result.innerText = "You Win!";
+    result.style.visibility = "visible";
+    won_game = true;
+  }
 
-function playerLoses() {
-  result.style.color = "red";
-  result.innerText = "You Lose!";
-  result.style.visibility = "visible";
-}
+  function playerLoses() {
+    result.style.color = "red";
+    result.innerText = "You Lose!";
+    result.style.visibility = "visible";
+  }
 
-function isBackspaceKey(letter) {
-  return letter === "Backspace";
-}
-function isEnterKey(letter) {
-  return letter === "Enter";
-}
-function deleteCharacter() {
-  if (!currentGuess.character) return;
-  currentGuess.character--;
-  let squares = document.querySelector(`.row${currentGuess.row}`).children;
-  squares[currentGuess.character].innerText = "";
-  currentGuess.guess = currentGuess.guess.substring(
-    0,
-    currentGuess.guess.length - 1
-  );
-}
-function setLoading(isLoading) {
-  result.classList.toggle("hide-loading", !isLoading);
-}
-
+  function isBackspaceKey(letter) {
+    return letter === "Backspace";
+  }
+  function isEnterKey(letter) {
+    return letter === "Enter";
+  }
+  function deleteCharacter() {
+    if (!currentGuess.character) return;
+    currentGuess.character--;
+    let squares = document.querySelector(`.row${currentGuess.row}`).children;
+    squares[currentGuess.character].innerText = "";
+    currentGuess.guess = currentGuess.guess.substring(
+      0,
+      currentGuess.guess.length - 1
+    );
+  }
+  function setLoading(isLoading) {
+    result.classList.toggle("hide-loading", !isLoading);
+  }
 }
 function makeMap(word) {
   const o = {};
