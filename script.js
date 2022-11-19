@@ -52,7 +52,7 @@ function guessLetter(letter) {
 
 function guessWord(word) {
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
-  if (word === answer) alert("You Win!");
+  if (word === answer) playersWins();
   for (let i = 0; i < 5; i++) {
     if (answer.includes(word[i])) {
       if (word[i] === answer[i]) {
@@ -65,7 +65,6 @@ function guessWord(word) {
     }
     squares[i].style.color = "white";
   }
-  // if(word === answer) alert("good guess!");
   incrementRow();
 }
 
@@ -75,11 +74,20 @@ function incrementRow() {
   currentGuess.guess = "";
 }
 function playersWins() {
-  alert("You Win!");
+  let header = document.querySelector('.heading');
+  header.classList.add('winning');
+  let result = document.querySelector('.result');
+  result.classList.add('winning');
+  result.style.color = 'lightgreen';
+  result.innerText = "You Win!"
+  result.style.visibility = 'initial';
 }
 
 function playerLoses() {
-  alert("You Lose!");
+  let result = document.querySelector('.result');
+  result.style.color = 'red';
+  result.innerText = "You Lose!"
+  result.style.visibility = 'initial';
 }
 
 function isLetter(letter) {

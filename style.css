@@ -51,7 +51,7 @@ body {
     }
   }
   .winning {
-    animation: rainbow 4s infinite linear;
+    animation: rainbow 3.5s infinite linear;
   }
 .header {
     margin-top: 1rem;
