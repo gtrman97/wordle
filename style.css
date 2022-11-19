@@ -74,11 +74,13 @@ body {
         transform: rotate(-360deg);
     }
 }
-.loading-icon {
+.result {
     animation: load 0.75s infinite linear;
     margin-top: 0.75rem;
     font-size: 50px;
-    visibility: hidden;
+}
+.hide-loading {
+  visibility: hidden;
 }
 .game {
     grid-area: board;

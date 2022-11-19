@@ -6,23 +6,24 @@
 
 // let word = null;
 
-// async function getWordOfDay(){
-//     let response = await fetch('https://words.dev-apis.com/word-of-the-day');
-//     let body = await response.json();
-//     let answer = body.word;
-//     // console.log(word.toUpperCase());
-//     // word = answer.toUpperCase();
-//     // return word.toUpperCase()
-// }
+async function getWordOfDay(){
+    let response = await fetch('https://words.dev-apis.com/word-of-the-day');
+    let responseObject = await response.json();
+    let word = responseObject.word.toUpperCase();
+    setLoading(false);
+    console.log(`word of the day is ${word}`);
+    // word = answer.toUpperCase();
+    // return word.toUpperCase()
+}
 // async function getWord(){
 //   let word = await getWordOfDay();
 //   return word;
 // }
-// getWordOfDay();
+getWordOfDay();
 // console.log(`word of the day is ${word}`);
 // let row = 1;
 // let character = 0;
-
+let result = document.querySelector('.result');
 let answer = "IVORY";
 let ANSWER_LENGTH = 5;
 
@@ -76,7 +77,6 @@ function incrementRow() {
 function playersWins() {
   let header = document.querySelector('.heading');
   header.classList.add('winning');
-  let result = document.querySelector('.result');
   result.classList.add('winning');
   result.style.color = 'lightgreen';
   result.innerText = "You Win!"
@@ -84,7 +84,6 @@ function playersWins() {
 }
 
 function playerLoses() {
-  let result = document.querySelector('.result');
   result.style.color = 'red';
   result.innerText = "You Lose!"
   result.style.visibility = 'initial';
@@ -106,6 +105,10 @@ function deleteCharacter() {
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
   squares[currentGuess.character].innerText = "";
   currentGuess.guess = currentGuess.guess.substring(0, currentGuess.guess.length-1);
+}
+
+function setLoading(isLoading){
+  result.classList.toggle("hide-loading", !isLoading);
 }
 
 async function validateWord() {
