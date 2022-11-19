@@ -95,7 +95,6 @@ body {
   flex-direction: column;
 }
 .row {
-  /* excellent use of flex-grow property sir! No width property needed! */
   flex-grow: 1;
   display: flex;
   padding: 0.5rem;
