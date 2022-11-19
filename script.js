@@ -26,6 +26,7 @@ getWordOfDay();
 let result = document.querySelector('.result');
 let answer = "IVORY";
 let ANSWER_LENGTH = 5;
+let won_game = false;
 
 let currentGuess = {
   row: 1,
@@ -39,7 +40,7 @@ window.addEventListener("keyup", (e) => {
   if (currentGuess.character < ANSWER_LENGTH && isLetter(letter)) guessLetter(letter);
   if (isBackspaceKey(letter)) deleteCharacter();
   if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter)) guessWord(currentGuess.guess);
-  if (currentGuess.row === 7) playerLoses();
+  if (currentGuess.row === 7 && !won_game) playerLoses();
   console.log(`row is ${currentGuess.row} and char is ${currentGuess.character}`);
   console.log(`current guess so far is ${currentGuess.guess}`);
 });
@@ -77,16 +78,16 @@ function incrementRow() {
 function playersWins() {
   let header = document.querySelector('.heading');
   header.classList.add('winning');
-  result.classList.add('winning');
   result.style.color = 'lightgreen';
   result.innerText = "You Win!"
-  result.style.visibility = 'initial';
+  result.style.visibility = 'visible';
+  won_game = true;
 }
 
 function playerLoses() {
   result.style.color = 'red';
   result.innerText = "You Lose!"
-  result.style.visibility = 'initial';
+  result.style.visibility = 'visible';
 }
 
 function isLetter(letter) {
