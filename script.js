@@ -38,7 +38,7 @@ window.addEventListener("keyup", (e) => {
   if (currentGuess.character < ANSWER_LENGTH && isLetter(letter)) guessLetter(letter);
   if (isBackspaceKey(letter)) deleteCharacter();
   if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter)) guessWord(currentGuess.guess);
-  if (currentGuess.row === 7) console.log("you lose");
+  if (currentGuess.row === 7) playerLoses();
   console.log(`row is ${currentGuess.row} and char is ${currentGuess.character}`);
   console.log(`current guess so far is ${currentGuess.guess}`);
 });
@@ -53,7 +53,6 @@ function guessLetter(letter) {
 function guessWord(word) {
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
   if (word === answer) alert("You Win!");
-  // if(word === answer) alert("good guess!");
   for (let i = 0; i < 5; i++) {
     if (answer.includes(word[i])) {
       if (word[i] === answer[i]) {
@@ -66,15 +65,21 @@ function guessWord(word) {
     }
     squares[i].style.color = "white";
   }
+  // if(word === answer) alert("good guess!");
   incrementRow();
 }
 
 function incrementRow() {
   currentGuess.row++;
   currentGuess.character = 0;
+  currentGuess.guess = "";
 }
-function endGame() {
+function playersWins() {
   alert("You Win!");
+}
+
+function playerLoses() {
+  alert("You Lose!");
 }
 
 function isLetter(letter) {
