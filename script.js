@@ -29,6 +29,7 @@ let ANSWER_LENGTH = 5;
 let currentGuess = {
   row: 1,
   character: 0,
+  guess: ""
 };
 
 window.addEventListener("keyup", (e) => {
@@ -36,25 +37,22 @@ window.addEventListener("keyup", (e) => {
   let letter = e.key;
   if (currentGuess.character < ANSWER_LENGTH && isLetter(letter)) guessLetter(letter);
   if (isBackspaceKey(letter)) deleteCharacter();
-  if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter)) guessWord();
+  if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter)) guessWord(currentGuess.guess);
   if (currentGuess.row === 7) console.log("you lose");
   console.log(`row is ${currentGuess.row} and char is ${currentGuess.character}`);
+  console.log(`current guess so far is ${currentGuess.guess}`);
 });
 
 function guessLetter(letter) {
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
   squares[currentGuess.character].innerText = letter.toUpperCase();
+  currentGuess.guess += letter.toUpperCase();
   currentGuess.character++;
 }
 
-function guessWord() {
+function guessWord(word) {
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
-  let word = "";
-  for (let square of squares) {
-    word += square.innerText;
-  }
   if (word === answer) alert("You Win!");
-  console.log(word);
   // if(word === answer) alert("good guess!");
   for (let i = 0; i < 5; i++) {
     if (answer.includes(word[i])) {
@@ -94,6 +92,7 @@ function deleteCharacter() {
   currentGuess.character--;
   let squares = document.querySelector(`.row${currentGuess.row}`).children;
   squares[currentGuess.character].innerText = "";
+  currentGuess.guess = currentGuess.guess.substring(0, currentGuess.guess.length-1);
 }
 
 async function validateWord() {
