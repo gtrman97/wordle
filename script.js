@@ -11,7 +11,8 @@ async function init() {
   let response = await fetch("https://words.dev-apis.com/word-of-the-day");
   let responseObject = await response.json();
   let answer = responseObject.word.toUpperCase();
-  setLoading(!isLoading);
+  setLoading(false);
+  let answerMap = makeMap(answer);
 
   window.addEventListener("keyup", (e) => {
     if(isLoading || done) return;
@@ -31,9 +32,28 @@ async function init() {
     currentGuess.character++;
   }
 
-  function guessWord(word) {
-    let answerMap = makeMap(answer);
+  async function guessWord(word) {
     console.log(answerMap);
+
+    setLoading(true);
+    const res = await fetch("https://words.dev-apis.com/validate-word", {
+      method: "POST",
+      body: JSON.stringify({ word: currentGuess.guess }),
+      mode: "cors",
+      word: "crane",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const resObj = await res.json();
+    const validWord = await resObj.validWord;
+    // const { validWord } = resObj; This line is equivalent to previous two lines
+    setLoading(false);
+
+    if(!validWord) {
+      markInvalidWord();
+      return;
+    }
 
     let squares = document.querySelector(`.row${currentGuess.row}`).children;
     if (word === answer) playersWins();
@@ -95,6 +115,15 @@ async function init() {
       currentGuess.guess.length - 1
     );
   }
+  function markInvalidWord(){
+    let squares = document.querySelector(`.row${currentGuess.row}`).children;
+    for(let square of squares) {
+      square.classList.add("invalid-word");
+      setTimeout(() => {
+        square.classList.remove("invalid-word");
+      }, 1000);
+    }
+  }
   function setLoading(bool) {
     isLoading = bool;
     result.classList.toggle("hide-loading", !isLoading);
@@ -113,19 +142,19 @@ function isLetter(letter) {
   return /^[a-zA-Z]$/.test(letter);
 }
 
-async function validateWord() {
-  let response = await fetch("https://words.dev-apis.com/validate-word", {
-    method: "POST",
-    mode: "cors",
-    word: "crane",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  let body = await response.json();
-  let isValid = body.validWord;
-  console.log(isValid);
-}
-validateWord();
+// async function validateWord() {
+//   let response = await fetch("https://words.dev-apis.com/validate-word", {
+//     method: "POST",
+//     mode: "cors",
+//     word: "crane",
+//     headers: {
+//       "content-type": "application/json",
+//     },
+//   });
+//   let body = await response.json();
+//   let isValid = body.validWord;
+//   console.log(isValid);
+// }
+// validateWord();
 
 init();

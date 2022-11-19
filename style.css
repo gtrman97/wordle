@@ -125,3 +125,14 @@ body {
 .incorrect {
   background-color: gray;
 }
+.invalid-word {
+  animation: flash 1s;
+}
+@keyframes flash {
+  5% {
+    border-color: red;
+  }
+  100% {
+    border-color: lightgray;
+  }
+}
