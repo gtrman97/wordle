@@ -6,7 +6,7 @@
 
 // let word = null;
 
-async function getWordOfDay(){
+async function init(){
     let response = await fetch('https://words.dev-apis.com/word-of-the-day');
     let responseObject = await response.json();
     let word = responseObject.word.toUpperCase();
@@ -15,19 +15,13 @@ async function getWordOfDay(){
     // word = answer.toUpperCase();
     // return word.toUpperCase()
 }
-// async function getWord(){
-//   let word = await getWordOfDay();
-//   return word;
-// }
-getWordOfDay();
-// console.log(`word of the day is ${word}`);
-// let row = 1;
-// let character = 0;
 let result = document.querySelector('.result');
 let answer = "IVORY";
 let ANSWER_LENGTH = 5;
 let won_game = false;
 
+console.log(`now the answer is ${answer}`);
+init();
 let currentGuess = {
   row: 1,
   character: 0,
@@ -58,14 +52,13 @@ function guessWord(word) {
   for (let i = 0; i < 5; i++) {
     if (answer.includes(word[i])) {
       if (word[i] === answer[i]) {
-        squares[i].style.backgroundColor = "green";
+        squares[i].classList.add('correct');
       } else {
-        squares[i].style.backgroundColor = "#daa520";
+        squares[i].classList.add('close');
       }
     } else {
-      squares[i].style.backgroundColor = "gray";
+      squares[i].classList.add('incorrect');
     }
-    squares[i].style.color = "white";
   }
   incrementRow();
 }
