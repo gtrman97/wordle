@@ -1,7 +1,8 @@
 async function init() {
   let result = document.querySelector(".result");
   let ANSWER_LENGTH = 5;
-  let won_game = false;
+  let done = false;
+  let isLoading = true; 
   let currentGuess = {
     row: 1,
     character: 0,
@@ -10,16 +11,17 @@ async function init() {
   let response = await fetch("https://words.dev-apis.com/word-of-the-day");
   let responseObject = await response.json();
   let answer = responseObject.word.toUpperCase();
-  setLoading(false);
+  setLoading(!isLoading);
 
   window.addEventListener("keyup", (e) => {
+    if(isLoading || done) return;
     let letter = e.key;
     if (currentGuess.character < ANSWER_LENGTH && isLetter(letter))
       guessLetter(letter);
     if (isBackspaceKey(letter)) deleteCharacter();
     if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter))
       guessWord(currentGuess.guess);
-    if (currentGuess.row === 7 && !won_game) playerLoses();
+    if (currentGuess.row === 7 && !done) playerLoses();
   });
 
   function guessLetter(letter) {
@@ -65,7 +67,7 @@ async function init() {
     result.style.color = "lightgreen";
     result.innerText = "You Win!";
     result.style.visibility = "visible";
-    won_game = true;
+    done = true;
   }
 
   function playerLoses() {
@@ -74,6 +76,7 @@ async function init() {
     result.style.color = "red";
     result.innerText = "You Lose!";
     result.style.visibility = "visible";
+    done = true;
   }
 
   function isBackspaceKey(letter) {
@@ -92,7 +95,8 @@ async function init() {
       currentGuess.guess.length - 1
     );
   }
-  function setLoading(isLoading) {
+  function setLoading(bool) {
+    isLoading = bool;
     result.classList.toggle("hide-loading", !isLoading);
   }
 }
