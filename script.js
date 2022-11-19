@@ -2,7 +2,7 @@ async function init() {
   let result = document.querySelector(".result");
   let ANSWER_LENGTH = 5;
   let done = false;
-  let isLoading = true; 
+  let isLoading = true;
   let currentGuess = {
     row: 1,
     character: 0,
@@ -15,7 +15,7 @@ async function init() {
   let answerMap = makeMap(answer);
 
   window.addEventListener("keyup", (e) => {
-    if(isLoading || done) return;
+    if (isLoading || done) return;
     let letter = e.key;
     if (currentGuess.character < ANSWER_LENGTH && isLetter(letter))
       guessLetter(letter);
@@ -50,7 +50,7 @@ async function init() {
     // const { validWord } = resObj; This line is equivalent to previous two lines
     setLoading(false);
 
-    if(!validWord) {
+    if (!validWord) {
       markInvalidWord();
       return;
     }
@@ -91,7 +91,7 @@ async function init() {
   }
 
   function playerLoses() {
-    let heading = document.querySelector('.heading');
+    let heading = document.querySelector(".heading");
     heading.innerText = `The word was ${answer}`;
     result.style.color = "red";
     result.innerText = "You Lose!";
@@ -115,9 +115,9 @@ async function init() {
       currentGuess.guess.length - 1
     );
   }
-  function markInvalidWord(){
+  function markInvalidWord() {
     let squares = document.querySelector(`.row${currentGuess.row}`).children;
-    for(let square of squares) {
+    for (let square of squares) {
       square.classList.add("invalid-word");
       setTimeout(() => {
         square.classList.remove("invalid-word");
@@ -141,20 +141,5 @@ function makeMap(word) {
 function isLetter(letter) {
   return /^[a-zA-Z]$/.test(letter);
 }
-
-// async function validateWord() {
-//   let response = await fetch("https://words.dev-apis.com/validate-word", {
-//     method: "POST",
-//     mode: "cors",
-//     word: "crane",
-//     headers: {
-//       "content-type": "application/json",
-//     },
-//   });
-//   let body = await response.json();
-//   let isValid = body.validWord;
-//   console.log(isValid);
-// }
-// validateWord();
 
 init();
