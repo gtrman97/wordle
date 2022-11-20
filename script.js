@@ -22,7 +22,7 @@ async function init() {
     if (isBackspaceKey(letter)) deleteCharacter();
     if (currentGuess.character === ANSWER_LENGTH && isEnterKey(letter))
       guessWord(currentGuess.guess);
-    if (currentGuess.row === 7 && !done) playerLoses();
+      console.log(`row is ${currentGuess.row}`);
   });
 
   function guessLetter(letter) {
@@ -39,14 +39,12 @@ async function init() {
     const res = await fetch("https://words.dev-apis.com/validate-word", {
       method: "POST",
       body: JSON.stringify({ word: currentGuess.guess }),
-      mode: "cors",
-      word: "crane",
       headers: {
         "content-type": "application/json",
       },
     });
     const resObj = await res.json();
-    const validWord = await resObj.validWord;
+    const validWord = resObj.validWord;
     // const { validWord } = resObj; This line is equivalent to previous two lines
     setLoading(false);
 
@@ -74,6 +72,7 @@ async function init() {
       }
     }
     incrementRow();
+    if (currentGuess.row === 7) playerLoses();
   }
 
   function incrementRow() {
