@@ -64,6 +64,7 @@ async function init() {
       if (squares[i].classList.contains("correct")) continue;
       if (answerMap[word[i]]) {
         squares[i].classList.add("close");
+        answerMap[word[i]]--;
       } else {
         squares[i].classList.add("incorrect");
       }
