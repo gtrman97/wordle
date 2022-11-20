@@ -12,7 +12,6 @@ async function init() {
   let responseObject = await response.json();
   let answer = responseObject.word.toUpperCase();
   setLoading(false);
-  let answerMap = makeMap(answer);
 
   window.addEventListener("keyup", (e) => {
     if (isLoading || done) return;
@@ -33,7 +32,8 @@ async function init() {
   }
 
   async function guessWord(word) {
-    console.log(answerMap);
+
+  let answerMap = makeMap(answer);
 
     setLoading(true);
     const res = await fetch("https://words.dev-apis.com/validate-word", {
