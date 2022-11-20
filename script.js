@@ -39,9 +39,6 @@ async function init() {
     const res = await fetch("https://words.dev-apis.com/validate-word", {
       method: "POST",
       body: JSON.stringify({ word: currentGuess.guess }),
-      headers: {
-        "content-type": "application/json",
-      },
     });
     const resObj = await res.json();
     const validWord = resObj.validWord;
